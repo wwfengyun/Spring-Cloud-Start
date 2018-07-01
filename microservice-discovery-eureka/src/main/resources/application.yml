@@ -1,0 +1,10 @@
+server:
+  port: 8761
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    #由于Eureka Server同时也是Eureka Client（在不同的Eureka节点之间需要数据通过，Eureka Server通过其中的Eureka Client操作其它的Eureka Server实例中的注册表），
+    #由于现在只使用一个Eureka Server，所以下面两行配置的意思是，让该Eureka Server不具备Eureka Client的功能
+    register-with-eureka: false
+    fetch-registry: false

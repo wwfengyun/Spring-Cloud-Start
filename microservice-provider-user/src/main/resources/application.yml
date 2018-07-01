@@ -2,18 +2,33 @@ server:
   port: 7900
 spring:
   jpa:
-    generate-ddl: false
-    show-sql: true
+    generate-ddl: false #启动时是否生成DDL语句
+    show-sql: true  #打印sql语句
     hibernate:
-      ddl-auto: none
+      ddl-auto: none  #JPA依赖于Hibernate，此项表示在启动时不做DDL处理
   datasource:
-    platform: h2
-    schema: classpath:schema.sql
-    data: classpath:data.sql
+    platform: h2  #使用内嵌H2数据库
+    schema: classpath:schema.sql  #schema项表示建表语句
+    data: classpath:data.sql  #data项表示初始化数据
+  application:
+    name: microservice-provider-user
 logging:
   level:
     root: INFO
-    org.hibernate: INFO
+    org.hibernate: INFO #次行以及下面的两行表示：显示sql语句，并且打印sql的参数
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
     com.windcloud.pro: DEBUG
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    healthcheck:
+          enabled: true
+  instance:
+    #此项为true时，在Eureka的主页上的instance的status中，当鼠标放在右侧的服务名上，
+    #浏览器的左下角会显示该服务的IP地址和端口
+    prefer-ip-address: true
+    #修改服务实例的Instance ID，默认的instance id是 主机名：服务名称：服务的端口
+    #如下的instance-id字段将服务的Instance ID改为 服务名称：服务的端口
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}

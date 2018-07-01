@@ -1,2 +1,19 @@
 server:
   port: 7901
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    healthcheck:
+              enabled: true
+  instance:
+      #此项为true时，在Eureka的主页上的instance的status中，当鼠标放在右侧的服务名上，
+      #浏览器的左下角会显示该服务的IP地址和端口
+      prefer-ip-address: true
+      #修改服务实例的Instance ID，默认的instance id是 主机名：服务名称：服务的端口
+      #如下的instance-id字段将服务的Instance ID改为 服务名称：服务的端口
+      instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+spring:
+  application:
+    name: microservice-consumer-movie
+
